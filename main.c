@@ -1,24 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   malloc.h                                           :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: molasz <molasz.dev@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/27 23:06:52 by molasz            #+#    #+#             */
-/*   Updated: 2026/03/28 01:36:19 by molasz           ###   ########.fr       */
+/*   Created: 2026/03/28 01:31:41 by molasz            #+#    #+#             */
+/*   Updated: 2026/03/28 02:04:21 by molasz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MALLOC_H
-# define MALLOC_H
+#include "types.h"
+#include <stdio.h>
 
-# include <stdlib.h>
-
-void	free(void *ptr);
-void	*malloc(size_t size);
-void	*realloc(void *ptr, size_t size);
-
-void	show_alloc_mem();
-
-#endif
+void	main()
+{
+	printf("PAGE_SIZE: %ld\nTINY: %ld\nSMALL: %ld\nTINY_BLOCK: %d (%ld)\nSMALL_BLOCK: %d (%ld)\n", PAGE_SIZE, TINY_ZONE, SMALL_ZONE, TINY_BLOCK, (TINY_BLOCK + BLOCK_SIZE) * 100 + AREA_SIZE, SMALL_BLOCK, (SMALL_BLOCK + BLOCK_SIZE) * 100 + AREA_SIZE);
+}

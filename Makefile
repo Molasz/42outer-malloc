@@ -1,41 +1,48 @@
-NAME	= malloc
+ifeq ($(HOSTTYPE),)
+	HOSTTYPE := $(shell uname -m)_$(shell uname -s)
+endif
 
-SRCS	= malloc.c
+NAME		= libft_malloc_$(HOSTTYPE).so
+LINK_NAME	= libft_malloc.so
 
-OPATH	= obj/
+SRCS_FILES	= malloc.c free.c realloc.c
+INC_FILES	= malloc.h types.h
 
-OBJS	= ${addprefix ${OPATH}, ${SRCS:.c=.o}}
+SPATH		= src/
+OPATH		= obj/
+IPATH		= includes/
 
-DEPS	= ${addprefix ${OPATH}, ${SRCS:.c=.d}}
+SRCS		= $(addprefix $(SPATH), $(SRCS_FILES))
+OBJS		= $(addprefix $(OPATH), $(SRCS_FILES:.c=.o))
+DEPS		= $(addprefix $(OPATH), $(SRCS_FILES:.c=.d))
+INCS		= $(addprefix $(IPATH), $(INC_FILES))
 
-RM		= rm -rf
+RM			= rm -rf
+CC			= gcc
+CFLAGS      = -Wall -Wextra -Werror -fPIC -Iincludes
 
-CC		= gcc
-
-CFLAGS	= -Wall -Wextra -Werror
-
-all:		dir ${NAME}
+all:        dir $(NAME)
 
 dir:
-				mkdir -p obj
+	mkdir -p $(OPATH)
 
-obj/%.o:	src/%.c Makefile includes/malloc.h
-				${CC} ${CFLAGS} -c $< -MMD -o $@
+$(OPATH)%.o:	$(SPATH)%.c Makefile $(INCS)
+	$(CC) $(CFLAGS) -c $< -MMD -o $@
 
-${NAME}:	${OBJS} dir
-				${CC} ${CFLAGS} ${OBJS} -o ${NAME}
+$(NAME):	$(OBJS)
+	$(CC) $(CFLAGS) -shared $(OBJS) -o $(NAME)
+	ln -sf $(NAME) $(LINK_NAME)
 
-test:		${NAME}
-				./${NAME} ${NAME} > a
-				nm ${NAME} > b
-				diff a b
+test: all
+	@chmod +x test_malloc.sh
+	@./test_malloc.sh
 
 clean:
-				${RM} ${OPATH}
+	$(RM) $(OPATH)
 
-fclean:		clean
-				${RM} ${NAME} a b
+fclean:     clean
+	$(RM) $(NAME) $(LINK_NAME)
 
-re:			fclean all
+re:         fclean all
 
-.PHONY:		all clean fclean re
+.PHONY:     all clean fclean re dir
