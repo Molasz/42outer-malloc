@@ -5,7 +5,7 @@ endif
 NAME		= libft_malloc_$(HOSTTYPE).so
 LINK_NAME	= libft_malloc.so
 
-SRCS_FILES	= malloc.c free.c realloc.c
+SRCS_FILES	= malloc.c free.c realloc.c zones.c blocks.c
 INC_FILES	= malloc.h types.h
 
 SPATH		= src/
