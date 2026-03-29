@@ -6,7 +6,7 @@
 /*   By: molasz <molasz.dev@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 00:36:53 by molasz            #+#    #+#             */
-/*   Updated: 2026/03/29 03:02:41 by molasz           ###   ########.fr       */
+/*   Updated: 2026/03/29 03:17:01 by molasz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,13 @@ typedef struct s_zone
 	t_block				*blocks;
 }	t_zone;
 
-# define ALIGNMENT 16
-# define ALIGN(size) (((size) + (ALIGNMENT - 1)) & ~(ALIGNMENT - 1))
+# define BLOCK_SIZE 32 // ALIGN(sizeof(t_block))
+# define ZONE_SIZE	32 // ALIGN(sizeof(t_zone))
 
-# define BLOCK_SIZE ALIGN(sizeof(t_block))
-# define ZONE_SIZE	ALIGN(sizeof(t_zone))
+# define PAGE_SIZE 4096  // sysconf(_SC_PAGESIZE)
 
-# define PAGE_SIZE sysconf(_SC_PAGESIZE)
-
-# define TINY_ZONE (PAGE_SIZE * 4)
-# define SMALL_ZONE (PAGE_SIZE * 16)
+# define TINY_ZONE 16384
+# define SMALL_ZONE 65536
 
 # define TINY_BLOCK 128
 # define SMALL_BLOCK 512
