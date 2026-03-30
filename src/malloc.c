@@ -6,7 +6,7 @@
 /*   By: molasz <molasz.dev@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 23:08:48 by molasz            #+#    #+#             */
-/*   Updated: 2026/03/29 01:57:19 by molasz           ###   ########.fr       */
+/*   Updated: 2026/03/30 01:59:45 by molasz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,11 @@
 
 void	*malloc(size_t size)
 {
-	void		*ptr;
+	t_zone	*zone;
+	t_block	*block;
 
-	ptr = find_or_create_zone(size);
-	return (ptr);
+	zone = find_or_create_zone(size);
+	block = find_block(zone, size);
+
+	return (block + BLOCK_SIZE);
 }

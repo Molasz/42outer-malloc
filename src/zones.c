@@ -6,7 +6,7 @@
 /*   By: molasz <molasz.dev@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/29 00:02:28 by molasz            #+#    #+#             */
-/*   Updated: 2026/03/29 01:56:59 by molasz           ###   ########.fr       */
+/*   Updated: 2026/03/30 02:12:37 by molasz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,8 @@ t_zone	*find_or_create_zone(size_t size)
 	t_zone_type	type;
 
 	type = get_type(size);
-	if (type == LARGE)
-		return (create_zone(size, type));
 	zone = g_zones[type];
-	if (!zone)
+	if (!zone || type == LARGE)
 		return (create_zone(size, type));
 	while (zone)
 	{
