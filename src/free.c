@@ -6,7 +6,7 @@
 /*   By: molasz <molasz.dev@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 23:07:47 by molasz            #+#    #+#             */
-/*   Updated: 2026/04/02 00:21:20 by molasz           ###   ########.fr       */
+/*   Updated: 2026/04/02 01:06:58 by molasz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,11 @@ static void	check_blocks(char *ptr, t_zone *zone, t_zone *prev, t_zone_type t)
 	block = zone->blocks;
 	while (block)
 	{
-		if (ptr > (char *)(block + 1)
-			&& ptr < (char *)(block + 1) + block->size)
+		if (ptr == (char *)(block + 1))
 		{
 			if (!block->free)
 			{
 				block->free = 1;
-				zone->used -= block->size;
 				if (t == LARGE)
 					call_munmap(zone, prev, t);
 				else if (((t_zone *)g_zones[t])->next)
@@ -73,7 +71,7 @@ static void	check_zones(char *ptr)
 		while (zone)
 		{
 			if (ptr > (char *)zone
-				&& ptr < (char *)(zone) + ZONE_SIZE + zone->total)
+				&& ptr < (char *)zone + ZONE_SIZE + zone->total)
 			{
 				check_blocks(ptr, zone, prev, type);
 				return ;
@@ -81,6 +79,7 @@ static void	check_zones(char *ptr)
 			prev = zone;
 			zone = zone->next;
 		}
+		type++;
 	}
 }
 
