@@ -6,31 +6,22 @@
 /*   By: molasz <molasz.dev@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 23:07:47 by molasz            #+#    #+#             */
-/*   Updated: 2026/04/01 20:46:14 by molasz           ###   ########.fr       */
+/*   Updated: 2026/04/02 00:21:20 by molasz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "types.h"
 
-static t_zone	*find_zone(t_block *block)
+static void	call_munmap(t_zone *zone, t_zone *prev, t_zone_type t)
 {
-	while (block->prev)
-		block = block->prev;
-	return ((t_zone *)((char *)block - ZONE_SIZE));
+	if (!prev)
+		g_zones[t] = zone->next;
+	else
+		prev->next = zone->next;
+	munmap(zone, zone->total + ZONE_SIZE);
 }
 
-static void	call_munmap(t_zone *zone, t_zone_type type)
-{
-	t_zone	*prev;
-
-	prev = g_zones[type];
-	while (prev->next != zone)
-		prev = prev->next;
-	prev->next = zone->next;
-	munmap(zone, zone->total + ZONE_SIZE + BLOCK_SIZE);
-}
-
-static void	validate_zone(t_zone *zone, t_zone_type type)
+static void	validate_zone(t_zone *zone, t_zone *prev, t_zone_type t)
 {
 	t_block	*block;
 
@@ -41,24 +32,61 @@ static void	validate_zone(t_zone *zone, t_zone_type type)
 			return ;
 		block = block->next;
 	}
-	call_munmap(zone, type);
+	call_munmap(zone, prev, t);
+}
+
+static void	check_blocks(char *ptr, t_zone *zone, t_zone *prev, t_zone_type t)
+{
+	t_block	*block;
+
+	block = zone->blocks;
+	while (block)
+	{
+		if (ptr > (char *)(block + 1)
+			&& ptr < (char *)(block + 1) + block->size)
+		{
+			if (!block->free)
+			{
+				block->free = 1;
+				zone->used -= block->size;
+				if (t == LARGE)
+					call_munmap(zone, prev, t);
+				else if (((t_zone *)g_zones[t])->next)
+					validate_zone(zone, prev, t);
+			}
+			return ;
+		}
+	}
+}
+
+static void	check_zones(char *ptr)
+{
+	int		type;
+	t_zone	*zone;
+	t_zone	*prev;
+
+	type = 0;
+	prev = NULL;
+	while (type < 3)
+	{
+		zone = g_zones[type];
+		while (zone)
+		{
+			if (ptr > (char *)zone
+				&& ptr < (char *)(zone) + ZONE_SIZE + zone->total)
+			{
+				check_blocks(ptr, zone, prev, type);
+				return ;
+			}
+			prev = zone;
+			zone = zone->next;
+		}
+	}
 }
 
 void	free(void *ptr)
 {
-	t_zone		*zone;
-	t_block		*block;
-	t_zone_type	type;
-
 	if (!ptr)
 		return ;
-	block = (t_block *) ptr - 1;
-	zone = find_zone(block);
-	block->free = 1;
-	zone->used -= block->size;
-	type = get_type(zone->total);
-	if (type == LARGE)
-		call_munmap(zone, type);
-	else
-		validate_zone(zone, type);
+	check_zones(ptr);
 }
