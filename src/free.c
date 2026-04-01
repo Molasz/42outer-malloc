@@ -6,7 +6,7 @@
 /*   By: molasz <molasz.dev@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 23:07:47 by molasz            #+#    #+#             */
-/*   Updated: 2026/04/01 20:28:04 by molasz           ###   ########.fr       */
+/*   Updated: 2026/04/01 20:46:14 by molasz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static t_zone	*find_zone(t_block *block)
 {
 	while (block->prev)
 		block = block->prev;
-	return (t_zone *)((char *)block - BLOCK_SIZE - ZONE_SIZE);
+	return ((t_zone *)((char *)block - ZONE_SIZE));
 }
 
 static void	call_munmap(t_zone *zone, t_zone_type type)
@@ -24,9 +24,7 @@ static void	call_munmap(t_zone *zone, t_zone_type type)
 	t_zone	*prev;
 
 	prev = g_zones[type];
-	if (prev == zone && !prev->next)
-		return;
-	while (prev->next == zone)
+	while (prev->next != zone)
 		prev = prev->next;
 	prev->next = zone->next;
 	munmap(zone, zone->total + ZONE_SIZE + BLOCK_SIZE);
@@ -36,12 +34,11 @@ static void	validate_zone(t_zone *zone, t_zone_type type)
 {
 	t_block	*block;
 
-	if (zone->used * 10 < zone->total * 9)
-		return;
+	block = zone->blocks;
 	while (block)
 	{
 		if (!block->free)
-			return;
+			return ;
 		block = block->next;
 	}
 	call_munmap(zone, type);
@@ -54,10 +51,11 @@ void	free(void *ptr)
 	t_zone_type	type;
 
 	if (!ptr)
-		return;
+		return ;
 	block = (t_block *) ptr - 1;
-	block->free = 1;
 	zone = find_zone(block);
+	block->free = 1;
+	zone->used -= block->size;
 	type = get_type(zone->total);
 	if (type == LARGE)
 		call_munmap(zone, type);

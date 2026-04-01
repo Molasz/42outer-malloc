@@ -15,8 +15,9 @@ fi
 
 echo -e "Iniciant tests d'interposició amb LD_PRELOAD...\n"
 
-# Llista de comandes a provar
-COMMANDS=("ls -la" "whoami" "hostname" "uname -a" "date" "df -h")
+#Llista de comandes a provar
+COMMANDS=("../42outer-nm/.ft_nm nm")
+#COMMANDS=("ls -la" "whoami" "hostname" "uname -a" "date" "df -h")
 
 echo -e "Norminette test: \n"
 norminette
