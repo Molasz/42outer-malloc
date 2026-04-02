@@ -6,7 +6,7 @@
 /*   By: molasz <molasz.dev@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 23:10:57 by molasz            #+#    #+#             */
-/*   Updated: 2026/04/02 04:27:51 by molasz           ###   ########.fr       */
+/*   Updated: 2026/04/03 00:27:56 by molasz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,16 @@ static t_block	*validate_zones(void *ptr)
 
 static void	*call_malloc(void *old, t_block *block, size_t size)
 {
-	size_t	aligned_size;
+	size_t	alsize;
+	size_t	alblock;
 	void	*ptr;
 
-	aligned_size = align16(size);
-	if (aligned_size <= block->size)
+	alsize = align_size(size, 16);
+	alblock = align_size(block->size, 16);
+	if (alsize <= alblock)
 	{
-		if (block->size >= aligned_size + BLOCK_SIZE + 16)
-			fractionate_block(block, aligned_size);
+		if (alblock >= alblock + BLOCK_SIZE + 16)
+			fractionate_block(block, size, alsize);
 		else
 			block->size = size;
 		return (old);

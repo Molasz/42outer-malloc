@@ -6,7 +6,7 @@
 /*   By: molasz <molasz.dev@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 23:07:47 by molasz            #+#    #+#             */
-/*   Updated: 2026/04/02 02:02:50 by molasz           ###   ########.fr       */
+/*   Updated: 2026/04/03 00:24:35 by molasz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ static void	check_blocks(char *ptr, t_zone *zone, t_zone *prev, t_zone_type t)
 			if (!block->free)
 			{
 				block->free = 1;
+				zone->used -= align_size(block->size, 16);
 				if (t == LARGE)
 					call_munmap(zone, prev, t);
 				else if (((t_zone *)g_zones[t])->next)

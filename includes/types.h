@@ -6,7 +6,7 @@
 /*   By: molasz <molasz.dev@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 00:36:53 by molasz            #+#    #+#             */
-/*   Updated: 2026/04/02 03:52:01 by molasz           ###   ########.fr       */
+/*   Updated: 2026/04/03 00:25:47 by molasz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,21 +42,16 @@ typedef struct s_zone
 # define BLOCK_SIZE 32 // ALIGN(sizeof(t_block))
 # define ZONE_SIZE	32 // ALIGN(sizeof(t_zone))
 
-# define PAGE_SIZE 4096  // sysconf(_SC_PAGESIZE)
-
-# define TINY_ZONE 16384
-# define SMALL_ZONE 65536
-
 # define TINY_BLOCK 128
-# define SMALL_BLOCK 512
+# define SMALL_BLOCK 1024
 
 extern t_zone	*g_zones[3];
 
 t_zone		*find_zone(size_t size);
-t_block		*find_block(t_zone *zone, size_t size);
-void		fractionate_block(t_block *old, size_t size);
+t_block		*find_block(t_zone *zone, size_t size, size_t alsize);
+void		fractionate_block(t_block *old, size_t size, size_t alsize);
 
-size_t		align16(size_t size);
+size_t		align_size(size_t size, size_t align);
 void		*ft_memcpy(void *dest, const void *src, size_t n);
 void		ft_putstr(char *s);
 void		ft_putnbr(size_t n);

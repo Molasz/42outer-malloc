@@ -6,7 +6,7 @@
 /*   By: molasz <molasz.dev@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/02 02:52:04 by molasz            #+#    #+#             */
-/*   Updated: 2026/04/02 04:17:07 by molasz           ###   ########.fr       */
+/*   Updated: 2026/04/02 23:34:44 by molasz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,15 @@ static size_t	print_blocks(t_block *block)
 	total = 0;
 	while (block)
 	{
-		ft_putaddr((void *)(block + 1));
+		ft_putaddr((char *)(block + 1));
 		ft_putstr(" - ");
-		ft_putaddr((void *)(block + 1 + block->size));
+		ft_putaddr((char *)(block + 1) + block->size);
 		ft_putstr(" : ");
 		ft_putnbr(block->size);
 		if (block->free)
 			ft_putstr(" \033[3mfree\033[0m");
 		ft_putstr("\n");
+		total += block->size;
 		block = block->next;
 	}
 	return (total);

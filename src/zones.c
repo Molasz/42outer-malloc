@@ -6,7 +6,7 @@
 /*   By: molasz <molasz.dev@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/29 00:02:28 by molasz            #+#    #+#             */
-/*   Updated: 2026/04/02 02:56:59 by molasz           ###   ########.fr       */
+/*   Updated: 2026/04/03 00:36:56 by molasz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,28 +31,39 @@ static void	*call_mmap(size_t size)
 {
 	void	*ptr;
 
-	ptr = mmap(NULL, size, PROT_READ | PROT_WRITE,
-			MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+	ptr = mmap(NULL, size,
+		PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
 	if (ptr == MAP_FAILED)
 		return (NULL);
 	return (ptr);
 }
 
+static size_t	get_zone_size(t_zone_type type, size_t pagesize)
+{
+	size_t	size;
+
+	if (type == TINY)
+		size = TINY_BLOCK;
+	else if (type == SMALL)
+		size = SMALL_BLOCK;
+	return (align_size(100 * (size + BLOCK_SIZE) + ZONE_SIZE, pagesize));
+}
+
 static t_zone	*create_zone(size_t size, t_zone_type type)
 {
 	size_t	zone_size;
+	size_t	page_size;
 	t_zone	*zone;
 
-	if (type == TINY)
-		zone_size = TINY_ZONE;
-	else if (type == SMALL)
-		zone_size = SMALL_ZONE;
+	page_size = sysconf(_SC_PAGESIZE);
+	if (type != LARGE)
+		zone_size = get_zone_size(type, page_size);
 	else
-		zone_size = BLOCK_SIZE + size;
+		zone_size = align_size(size + BLOCK_SIZE + ZONE_SIZE, page_size);
 	zone = call_mmap(zone_size + ZONE_SIZE);
 	if (zone)
 	{
-		zone->total = zone_size;
+		zone->total = zone_size - ZONE_SIZE;
 		zone->used = 0;
 		zone->next = NULL;
 		zone->blocks = NULL;

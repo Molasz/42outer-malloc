@@ -6,15 +6,15 @@
 /*   By: molasz <molasz.dev@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/01 23:10:24 by molasz            #+#    #+#             */
-/*   Updated: 2026/04/02 03:35:30 by molasz           ###   ########.fr       */
+/*   Updated: 2026/04/03 00:09:39 by molasz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "types.h"
 
-size_t	align16(size_t size)
+size_t	align_size(size_t size, size_t align)
 {
-	return ((size + 15) & ~15);
+	return ((size + align - 1) & ~(align - 1));
 }
 
 void	*ft_memcpy(void *dest, const void *src, size_t n)
