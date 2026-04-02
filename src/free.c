@@ -6,7 +6,7 @@
 /*   By: molasz <molasz.dev@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 23:07:47 by molasz            #+#    #+#             */
-/*   Updated: 2026/04/03 00:24:35 by molasz           ###   ########.fr       */
+/*   Updated: 2026/04/03 00:56:00 by molasz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ static void	check_zones(char *ptr)
 	type = 0;
 	while (type < 3)
 	{
-
 		prev = NULL;
 		zone = g_zones[type];
 		while (zone)

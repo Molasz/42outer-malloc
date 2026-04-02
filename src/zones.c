@@ -6,7 +6,7 @@
 /*   By: molasz <molasz.dev@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/29 00:02:28 by molasz            #+#    #+#             */
-/*   Updated: 2026/04/03 00:36:56 by molasz           ###   ########.fr       */
+/*   Updated: 2026/04/03 00:58:34 by molasz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void	*call_mmap(size_t size)
 	void	*ptr;
 
 	ptr = mmap(NULL, size,
-		PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+			PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
 	if (ptr == MAP_FAILED)
 		return (NULL);
 	return (ptr);

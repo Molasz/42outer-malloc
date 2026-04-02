@@ -6,7 +6,7 @@
 /*   By: molasz <molasz.dev@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 01:06:29 by molasz            #+#    #+#             */
-/*   Updated: 2026/04/03 00:25:12 by molasz           ###   ########.fr       */
+/*   Updated: 2026/04/03 00:57:38 by molasz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ static t_block	*create_block(t_zone *zone, t_block *prev,
 	t_block	*block;
 
 	if (prev)
-		block =
-			(t_block *)((char *)prev + BLOCK_SIZE + align_size(prev->size, 16));
+		block = (t_block *)((char *)prev
+				+ BLOCK_SIZE + align_size(prev->size, 16));
 	else
 		block = (t_block *)((char *)zone + ZONE_SIZE);
 	block->size = size;

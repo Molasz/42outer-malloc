@@ -6,7 +6,7 @@
 /*   By: molasz <molasz.dev@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/02 02:52:04 by molasz            #+#    #+#             */
-/*   Updated: 2026/04/02 23:34:44 by molasz           ###   ########.fr       */
+/*   Updated: 2026/04/03 00:56:23 by molasz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static size_t	print_blocks(t_block *block)
 
 static size_t	print_zone(t_zone *zone, t_zone_type type)
 {
-	size_t total;
+	size_t	total;
 
 	total = 0;
 	while (zone)
@@ -60,7 +60,7 @@ static size_t	print_zone(t_zone *zone, t_zone_type type)
 	return (total);
 }
 
-static size_t	print_zones()
+static size_t	print_zones(void)
 {
 	t_zone	*zone;
 	size_t	total;

@@ -6,7 +6,7 @@
 /*   By: molasz <molasz.dev@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 00:36:53 by molasz            #+#    #+#             */
-/*   Updated: 2026/04/03 00:25:47 by molasz           ###   ########.fr       */
+/*   Updated: 2026/04/03 00:51:33 by molasz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ typedef struct s_zone
 # define ZONE_SIZE	32 // ALIGN(sizeof(t_zone))
 
 # define TINY_BLOCK 128
-# define SMALL_BLOCK 1024
+# define SMALL_BLOCK 4092
 
 extern t_zone	*g_zones[3];
 

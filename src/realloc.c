@@ -6,7 +6,7 @@
 /*   By: molasz <molasz.dev@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 23:10:57 by molasz            #+#    #+#             */
-/*   Updated: 2026/04/03 00:27:56 by molasz           ###   ########.fr       */
+/*   Updated: 2026/04/03 00:59:09 by molasz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static t_block	*validate_zones(void *ptr)
 			{
 				block = validate_blocks(ptr, zone->blocks);
 				if (block)
-					return (block); 
+					return (block);
 			}
 			zone = zone->next;
 		}
