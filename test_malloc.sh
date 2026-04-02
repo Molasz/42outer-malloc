@@ -9,15 +9,12 @@ NC='\033[0m'
 LIB_PATH="./libft_malloc.so"
 
 if [ ! -f "$LIB_PATH" ]; then
-    echo -e "${RED}Error: No s'ha trobat $LIB_PATH. Compila primer.${NC}"
     exit 1
 fi
 
-echo -e "Iniciant tests d'interposició amb LD_PRELOAD...\n"
 
 #Llista de comandes a provar
-COMMANDS=("../42outer-nm/.ft_nm nm")
-#COMMANDS=("ls -la" "whoami" "hostname" "uname -a" "date" "df -h")
+COMMANDS=("ls -la" "whoami" "hostname" "uname -a" "date" "df -h")
 
 echo -e "Norminette test: \n"
 norminette
@@ -38,4 +35,4 @@ for cmd in "${COMMANDS[@]}"; do
     fi
 done
 
-echo -e "\n${GREEN}Tots els tests bàsics han passat correctament!${NC}"
+echo -e "\n${GREEN}ALL TEST PASS!${NC}"

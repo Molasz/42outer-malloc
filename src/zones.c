@@ -6,13 +6,26 @@
 /*   By: molasz <molasz.dev@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/29 00:02:28 by molasz            #+#    #+#             */
-/*   Updated: 2026/04/02 00:01:20 by molasz           ###   ########.fr       */
+/*   Updated: 2026/04/02 02:56:59 by molasz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "types.h"
 
 t_zone	*g_zones[3];
+
+static t_zone_type	get_type(size_t size)
+{
+	t_zone_type	z;
+
+	if (size <= TINY_BLOCK)
+		z = TINY;
+	else if (size <= SMALL_BLOCK)
+		z = SMALL;
+	else
+		z = LARGE;
+	return (z);
+}
 
 static void	*call_mmap(size_t size)
 {
@@ -47,7 +60,7 @@ static t_zone	*create_zone(size_t size, t_zone_type type)
 	return (zone);
 }
 
-t_zone	*find_or_create_zone(size_t size)
+t_zone	*find_zone(size_t size)
 {
 	t_zone_type	type;
 	t_zone		*zone;

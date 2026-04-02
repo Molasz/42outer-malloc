@@ -5,7 +5,7 @@ endif
 NAME		= libft_malloc_$(HOSTTYPE).so
 LINK_NAME	= libft_malloc.so
 
-SRCS_FILES	= malloc.c free.c realloc.c zones.c blocks.c utils.c
+SRCS_FILES	= malloc.c free.c realloc.c zones.c blocks.c utils.c show_alloc_mem.c
 INC_FILES	= malloc.h types.h
 
 SPATH		= src/
@@ -33,12 +33,15 @@ $(NAME):	$(OBJS)
 	$(CC) $(CFLAGS) -shared $(OBJS) -o $(NAME)
 	ln -sf $(NAME) $(LINK_NAME)
 
+run: all
+	$(CC) $(CFLAGS) main.c -L. -lft_malloc -o test_main
+	LD_LIBRARY_PATH=. ./test_main
+
 test: all
-	@chmod +x test_malloc.sh
-	@./test_malloc.sh
+	./test_malloc.sh
 
 clean:
-	$(RM) $(OPATH)
+	$(RM) $(OPATH) test_main
 
 fclean:     clean
 	$(RM) $(NAME) $(LINK_NAME)

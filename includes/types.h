@@ -6,7 +6,7 @@
 /*   By: molasz <molasz.dev@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 00:36:53 by molasz            #+#    #+#             */
-/*   Updated: 2026/04/01 23:12:02 by molasz           ###   ########.fr       */
+/*   Updated: 2026/04/02 03:52:01 by molasz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ typedef struct s_block
 {
 	size_t			size;
 	struct s_block	*next;
-	struct s_block	*prev;
 	int				free;
 }	t_block;
 
@@ -53,10 +52,14 @@ typedef struct s_zone
 
 extern t_zone	*g_zones[3];
 
-t_zone		*find_or_create_zone(size_t size);
+t_zone		*find_zone(size_t size);
 t_block		*find_block(t_zone *zone, size_t size);
+void		fractionate_block(t_block *old, size_t size);
 
-t_zone_type	get_type(size_t size);
 size_t		align16(size_t size);
+void		*ft_memcpy(void *dest, const void *src, size_t n);
+void		ft_putstr(char *s);
+void		ft_putnbr(size_t n);
+void		ft_puthex(size_t n);
 
 #endif

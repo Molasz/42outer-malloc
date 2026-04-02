@@ -6,7 +6,7 @@
 /*   By: molasz <molasz.dev@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 23:08:48 by molasz            #+#    #+#             */
-/*   Updated: 2026/04/02 00:22:11 by molasz           ###   ########.fr       */
+/*   Updated: 2026/04/02 04:23:04 by molasz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ void	*malloc(size_t size)
 	if (!size)
 		return (NULL);
 	align_size = align16(size);
-	zone = find_or_create_zone(align_size);
+	zone = find_zone(align_size);
 	if (!zone)
 		return (NULL);
-	block = find_block(zone, align_size);
+	block = find_block(zone, size);
 	if (!block)
 		return (NULL);
 	return (block + 1);

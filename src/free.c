@@ -6,7 +6,7 @@
 /*   By: molasz <molasz.dev@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 23:07:47 by molasz            #+#    #+#             */
-/*   Updated: 2026/04/02 01:06:58 by molasz           ###   ########.fr       */
+/*   Updated: 2026/04/02 02:02:50 by molasz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ static void	check_blocks(char *ptr, t_zone *zone, t_zone *prev, t_zone_type t)
 			}
 			return ;
 		}
+		block = block->next;
 	}
 }
 
@@ -64,9 +65,10 @@ static void	check_zones(char *ptr)
 	t_zone	*prev;
 
 	type = 0;
-	prev = NULL;
 	while (type < 3)
 	{
+
+		prev = NULL;
 		zone = g_zones[type];
 		while (zone)
 		{
