@@ -1,11 +1,9 @@
 #!/bin/bash
 
-# Color per a la sortida
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 NC='\033[0m'
 
-# Ruta a la teva llibreria
 LIB_PATH="./libft_malloc.so"
 
 if [ ! -f "$LIB_PATH" ]; then
@@ -13,18 +11,24 @@ if [ ! -f "$LIB_PATH" ]; then
 fi
 
 
-#Llista de comandes a provar
-COMMANDS=("ls -la" "whoami" "hostname" "uname -a" "date" "df -h")
-
-echo -e "Norminette test: \n"
-norminette
-echo -e "\n"
-
+COMMANDS=(
+    "ls -la"
+    "whoami"
+    "hostname"
+    "uname -a"
+    "date"
+    "df -h"
+    "ps aux"
+    "find /etc -maxdepth 2"
+    "grep -r root /etc/ 2>/dev/null"
+    "awk 'BEGIN {for(i=0;i<1000;i++) a[i]=i; print \"awk ok\"}'"
+    "cat /dev/urandom | head -n 1000 | wc -c"
+    "tree -L 2 /"
+)
 
 for cmd in "${COMMANDS[@]}"; do
-    echo -n "Provant: $cmd ... "
+    echo -n "$cmd: "
     
-    # Executem la comanda amb el teu malloc
     LD_PRELOAD=$LIB_PATH $cmd > /dev/null 2>&1
     
     if [ $? -eq 0 ]; then

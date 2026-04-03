@@ -6,7 +6,7 @@
 /*   By: molasz <molasz.dev@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/29 00:02:28 by molasz            #+#    #+#             */
-/*   Updated: 2026/04/03 02:24:29 by molasz           ###   ########.fr       */
+/*   Updated: 2026/04/03 03:49:48 by molasz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,20 @@ static t_zone	*create_zone(size_t size, t_zone_type type)
 	return (zone);
 }
 
+static int	check_blocks_free(t_zone *zone, size_t size)
+{
+	t_block	*block;
+
+	block = zone->blocks;
+	while (block)
+	{
+		if (block->free && align_size(block->size, 16) >= size)
+			return (1);
+		block = block->next;
+	}
+	return (0);
+}
+
 t_zone	*find_zone(size_t size)
 {
 	t_zone_type	type;
@@ -70,7 +84,8 @@ t_zone	*find_zone(size_t size)
 	}
 	while (zone)
 	{
-		if (zone->total - zone->used >= BLOCK_SIZE + size && type != LARGE)
+		if (type != LARGE && (zone->total - zone->used >= BLOCK_SIZE + size
+				|| check_blocks_free(zone, size)))
 			return (zone);
 		prev = zone;
 		zone = zone->next;
