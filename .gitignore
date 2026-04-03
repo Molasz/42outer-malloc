@@ -1,4 +1,5 @@
 obj/
-test_main
+bin/
+test/tes
 *.out
 *.so

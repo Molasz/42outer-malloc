@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*		                                                                      */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   basic.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: molasz <molasz.dev@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/28 01:31:41 by molasz            #+#    #+#             */
-/*   Updated: 2026/04/03 01:05:03 by molasz           ###   ########.fr       */
+/*   Updated: 2026/04/03 02:18:02 by molasz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "types.h"
 #include <stdio.h>
 
-void	show_alloc_mem_test(void)
+static void	show_alloc_mem_test_normal(void)
 {
 	char	*a;
 	char	*b;
@@ -31,7 +31,7 @@ void	show_alloc_mem_test(void)
 	free(d);
 }
 
-void	show_alloc_mem_test_extra(void)
+static void	show_alloc_mem_test_basic(void)
 {
 	char	*a;
 	char	*b;
@@ -60,7 +60,7 @@ void	show_alloc_mem_test_extra(void)
 
 int	main(void)
 {
-	show_alloc_mem_test();
-	show_alloc_mem_test_extra();
+	show_alloc_mem_test_normal();
+	show_alloc_mem_test_basic();
 	return (0);
 }

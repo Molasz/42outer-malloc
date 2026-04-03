@@ -6,7 +6,7 @@
 /*   By: molasz <molasz.dev@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 23:10:57 by molasz            #+#    #+#             */
-/*   Updated: 2026/04/03 00:59:09 by molasz           ###   ########.fr       */
+/*   Updated: 2026/04/03 03:00:54 by molasz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static t_block	*validate_blocks(void *ptr, t_block *block)
 {
 	while (block)
 	{
-		if ((void *)(block + 1) == ptr)
+		if ((char *)block + BLOCK_SIZE == ptr)
 			return (block);
 		block = block->next;
 	}
@@ -49,7 +49,7 @@ static t_block	*validate_zones(void *ptr)
 	return (NULL);
 }
 
-static void	*call_malloc(void *old, t_block *block, size_t size)
+static void	*call_malloc_realloc(void *old, t_block *block, size_t size)
 {
 	size_t	alsize;
 	size_t	alblock;
@@ -59,17 +59,17 @@ static void	*call_malloc(void *old, t_block *block, size_t size)
 	alblock = align_size(block->size, 16);
 	if (alsize <= alblock)
 	{
-		if (alblock >= alblock + BLOCK_SIZE + 16)
+		if (alblock >= alsize + BLOCK_SIZE + 16)
 			fractionate_block(block, size, alsize);
 		else
 			block->size = size;
 		return (old);
 	}
-	ptr = malloc(size);
+	ptr = call_malloc(size);
 	if (!ptr)
 		return (NULL);
 	ft_memcpy(ptr, old, block->size);
-	free(old);
+	call_free(old);
 	return (ptr);
 }
 
@@ -81,10 +81,18 @@ void	*realloc(void *ptr, size_t size)
 	if (!ptr)
 		return (malloc(size));
 	if (!size)
-		return (free(ptr), NULL);
+	{
+		free(ptr);
+		return (NULL);
+	}
+	pthread_mutex_lock(&g_malloc_mutex);
 	block = validate_zones(ptr);
 	if (!block)
+	{
+		pthread_mutex_unlock(&g_malloc_mutex);
 		return (NULL);
-	new = call_malloc(ptr, block, size);
+	}
+	new = call_malloc_realloc(ptr, block, size);
+	pthread_mutex_unlock(&g_malloc_mutex);
 	return (new);
 }

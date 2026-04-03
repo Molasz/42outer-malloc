@@ -6,11 +6,28 @@
 /*   By: molasz <molasz.dev@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 01:06:29 by molasz            #+#    #+#             */
-/*   Updated: 2026/04/03 00:57:38 by molasz           ###   ########.fr       */
+/*   Updated: 2026/04/03 02:34:19 by molasz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "types.h"
+
+void	coalesce_blocks(t_zone *zone)
+{
+	t_block	*block;
+
+	block = zone->blocks;
+	while (block && block->next)
+	{
+		if (block->free && block->next->free)
+		{
+			block->size += align_size(block->next->size, 16) + BLOCK_SIZE;
+			block->next = block->next->next;
+		}
+		else
+			block = block->next;
+	}
+}
 
 static t_block	*create_block(t_zone *zone, t_block *prev,
 	size_t size, size_t alsize)
@@ -37,7 +54,7 @@ void	fractionate_block(t_block *old, size_t size, size_t alsize)
 {
 	t_block	*block;
 
-	block = (t_block *)((char *)(old + 1) + alsize);
+	block = (t_block *)((char *)(old + BLOCK_SIZE) + alsize);
 	block->size = align_size(old->size, 16) - alsize - BLOCK_SIZE;
 	block->free = 1;
 	block->next = old->next;

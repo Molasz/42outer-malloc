@@ -6,7 +6,7 @@
 /*   By: molasz <molasz.dev@gmail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/02 02:52:04 by molasz            #+#    #+#             */
-/*   Updated: 2026/04/03 00:56:23 by molasz           ###   ########.fr       */
+/*   Updated: 2026/04/03 02:54:02 by molasz           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ static size_t	print_blocks(t_block *block)
 	total = 0;
 	while (block)
 	{
-		ft_putaddr((char *)(block + 1));
+		ft_putaddr((char *)block + BLOCK_SIZE);
 		ft_putstr(" - ");
-		ft_putaddr((char *)(block + 1) + block->size);
+		ft_putaddr((char *)block + BLOCK_SIZE + block->size);
 		ft_putstr(" : ");
 		ft_putnbr(block->size);
 		if (block->free)
@@ -81,8 +81,10 @@ void	show_alloc_mem(void)
 {
 	size_t	total;
 
+	pthread_mutex_lock(&g_malloc_mutex);
 	total = print_zones();
 	ft_putstr("Total : ");
 	ft_putnbr(total);
 	ft_putstr(" bytes\n");
+	pthread_mutex_unlock(&g_malloc_mutex);
 }
