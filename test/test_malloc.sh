@@ -18,12 +18,6 @@ COMMANDS=(
     "uname -a"
     "date"
     "df -h"
-    "ps aux"
-    "find /etc -maxdepth 2"
-    "grep -r root /etc/ 2>/dev/null"
-    "awk 'BEGIN {for(i=0;i<1000;i++) a[i]=i; print \"awk ok\"}'"
-    "cat /dev/urandom | head -n 1000 | wc -c"
-    "tree -L 2 /"
 )
 
 for cmd in "${COMMANDS[@]}"; do
